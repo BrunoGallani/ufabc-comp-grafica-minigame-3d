@@ -68,6 +68,5 @@ class CameraOrbital(Camera):
         self.distancia = float(np.clip(self.distancia - passos * PASSO_ZOOM, *LIMITES_ORBITAL))
 
     def visao(self) -> glm.mat4:
-        # O trackball gira a cena; para a câmera, é o giro contrário aplicado ao olho e ao "para cima".
-        giro = glm.inverse(self.trackball.orientacao)
-        return glm.lookAt(giro * glm.vec3(0.0, 0.0, self.distancia), CENTRO, giro * CIMA)
+        # No visualizador, a matriz do trackball entra na de modelo; aqui, na de visão: gira a cena toda.
+        return glm.lookAt(glm.vec3(0.0, 0.0, self.distancia), CENTRO, CIMA) * self.trackball.matriz()

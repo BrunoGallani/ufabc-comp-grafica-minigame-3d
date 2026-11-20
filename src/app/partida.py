@@ -29,8 +29,7 @@ def interpolar(par: Par, t: float) -> float:
 
 
 class Partida:
-    def __init__(self, semente: int | None = None) -> None:
-        self.aleatorio = random.Random(semente)
+    def __init__(self) -> None:
         self.pontos = 0
         self.vidas = VIDAS
         self.terra = Terra()
@@ -79,11 +78,11 @@ class Partida:
         progresso = self.pontos / META
         self.espera_asteroide = interpolar(INTERVALO_ASTEROIDE, progresso)
 
-        sortear = self.aleatorio.uniform
+        sortear = random.uniform
         raio = sortear(*RAIO_ASTEROIDE)
         tamanho = raio * glm.vec3(1.0, sortear(*ACHATAMENTO_ASTEROIDE),
                                   sortear(*ACHATAMENTO_ASTEROIDE))
-        eixo = glm.normalize(glm.vec3(*(self.aleatorio.gauss(0.0, 1.0) for _ in range(3))))
+        eixo = glm.normalize(glm.vec3(*(random.gauss(0.0, 1.0) for _ in range(3))))
         velocidade = interpolar(VEL_ASTEROIDE, progresso) \
             * sortear(1.0 - VARIACAO_VEL_ASTEROIDE, 1.0 + VARIACAO_VEL_ASTEROIDE)
         self.asteroides.append(Asteroide(sortear(0.0, 2.0 * np.pi), velocidade, raio, tamanho,

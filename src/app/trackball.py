@@ -38,3 +38,6 @@ class Trackball:
 
     def soltar(self) -> None:
         self.arrastando = False
+
+    def matriz(self) -> glm.mat4:
+        return glm.mat4_cast(self.orientacao)
