@@ -71,6 +71,11 @@ COR_LUZ_NAVE = (0.35, 0.75, 1.6)
 ATENUACAO_LUZ_NAVE = (1.0, 0.15, 0.08)   # kc, kl, kq
 AVANCO_LUZ_NAVE = 0.55   # a luz fica no bico, à frente do centro da nave
 
+# Tecla I. A posição de cada modo é o u_modo de cena.frag.
+MODOS_DE_ILUMINACAO = ("Blinn-Phong", "Phong", "cartoon", "normais")
+# Tecla T. As nuvens só vão sobre a primeira, a foto da Terra.
+TEXTURAS_TERRA = ("terra.jpg", "pattern.png", "brick_base.jpg")
+
 FUNDO = (0.0, 0.004, 0.012)
 COR_ESTRELAS = (0.55, 0.58, 0.68)
 QUANTIDADE_ESTRELAS = 1500

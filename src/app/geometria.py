@@ -1,10 +1,9 @@
 """Geometrias geradas em numpy (nada aqui fala com a GPU)."""
 import numpy as np
 
-# Formas do placar, centradas na origem e com tamanho 1.
+# Formas do placar, centradas na origem e com tamanho 1. Os cantos do quadrado
+# estão na ordem do contorno: servem ao TRIANGLE_FAN e ao LINE_LOOP.
 QUADRADO = np.array([(-0.5, -0.5), (0.5, -0.5), (0.5, 0.5), (-0.5, 0.5)], dtype='f4')
-TRIANGULOS_QUADRADO = np.array([0, 1, 2, 2, 3, 0], dtype='u4')
-CONTORNO_QUADRADO = np.array([0, 1, 2, 3], dtype='u4')
 SETA = np.array([(-0.4, -0.5), (0.6, 0.0), (-0.4, 0.5)], dtype='f4')   # aponta para a direita
 
 

@@ -8,7 +8,7 @@ EPS = 1e-12        # evita divisão por zero ao normalizar
 MEIA_VOLTA = 0.5   # em u; um triângulo comum cobre menos que isso
 
 
-class MalhaOff:
+class Malha:
     def __init__(self, caminho: Path) -> None:
         self.vertices, self.faces = ler_off(caminho)
         minimo, maximo = self.vertices.min(axis=0), self.vertices.max(axis=0)

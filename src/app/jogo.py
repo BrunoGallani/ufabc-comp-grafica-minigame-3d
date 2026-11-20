@@ -12,7 +12,7 @@ import numpy as np
 from camera import CameraOrbital, CameraPerseguicao
 from config import (
     ANGULO_SETA, ATENUACAO_LUZ_NAVE, AVANCO_LUZ_NAVE, COR_LUZ_NAVE, COR_SOL, DIRECAO_SOL, META,
-    NOME_JOGO,
+    MODOS_DE_ILUMINACAO, NOME_JOGO, TEXTURAS_TERRA,
 )
 from material import Luz
 from partida import Partida
@@ -49,6 +49,8 @@ class Jogo:
         self.orbital = CameraOrbital()
         self.camera = self.perseguicao
         self.modo_de_luz = 0
+        self.modo_de_iluminacao = 0
+        self.textura_terra = 0
         self.vsync = True
         self.partida = Partida()
         self.estado = Estado.INICIO
@@ -63,6 +65,8 @@ class Jogo:
             glfw.KEY_R: self.reiniciar,
             glfw.KEY_C: self.trocar_camera,
             glfw.KEY_L: self.trocar_luz,
+            glfw.KEY_I: self.trocar_iluminacao,
+            glfw.KEY_T: self.trocar_textura,
             glfw.KEY_V: self.alternar_vsync,
         }
 
@@ -99,6 +103,12 @@ class Jogo:
 
     def trocar_luz(self) -> None:
         self.modo_de_luz = (self.modo_de_luz + 1) % len(MODOS_DE_LUZ)
+
+    def trocar_iluminacao(self) -> None:
+        self.modo_de_iluminacao = (self.modo_de_iluminacao + 1) % len(MODOS_DE_ILUMINACAO)
+
+    def trocar_textura(self) -> None:
+        self.textura_terra = (self.textura_terra + 1) % len(TEXTURAS_TERRA)
 
     def alternar_vsync(self) -> None:
         self.vsync = not self.vsync
@@ -177,7 +187,8 @@ class Jogo:
         return float(np.sign(diferenca)) if abs(diferenca) > ANGULO_SETA else 0.0
 
     def desenhar(self) -> None:
-        self.render.iniciar_cena(self.camera, *self._luzes())
+        self.render.iniciar_cena(self.camera, *self._luzes(), self.modo_de_iluminacao,
+                                 self.textura_terra)
         self.partida.desenhar(self.render)
         self.render.estrelas()
 
@@ -200,6 +211,8 @@ class Jogo:
         return (f"{NOME_JOGO} - {self.estado.value} - {self.partida.pontos}/{META} pontos - "
                 f"{self.partida.vidas} vidas - câmera: {self.camera.nome} - "
                 f"luz: {MODOS_DE_LUZ[self.modo_de_luz][0]} - "
+                f"iluminação: {MODOS_DE_ILUMINACAO[self.modo_de_iluminacao]} - "
+                f"Terra: {TEXTURAS_TERRA[self.textura_terra]} - "
                 f"vsync {'on' if self.vsync else 'OFF'} - {fps:5.1f} fps")
 
     def liberar(self) -> None:

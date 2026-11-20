@@ -1,13 +1,15 @@
 #version 400 core
 
-// Blinn-Phong por fragmento, no espaco da camera, com duas fontes:
+// Phong por fragmento, no espaco da camera, com duas fontes:
 // o Sol (direcional) e a luz da nave (pontual, com atenuacao).
 // A saida e luz linear; o OpenGL a codifica em sRGB ao gravar.
 
 in vec3 fP;
 in vec3 fN;
+in vec3 fNmundo;
 in vec2 fTexCoord;
 
+uniform int u_modo;           // 0 Blinn-Phong, 1 Phong, 2 cartoon, 3 normais (tecla I)
 uniform vec3 u_ka, u_kd, u_ks;
 uniform float u_alfa;
 
@@ -27,6 +29,8 @@ uniform float u_deslocamento; // das nuvens, em u
 
 out vec4 outfragcolor;
 
+const float NIVEIS_CARTOON = 4.0;
+
 // Parcelas difusa e especular de uma fonte.
 vec3 fonte(vec4 luz, vec3 cor, vec3 N, vec3 V, vec3 kd) {
     vec3 L = normalize(luz.xyz);
@@ -39,16 +43,32 @@ vec3 fonte(vec4 luz, vec3 cor, vec3 N, vec3 V, vec3 kd) {
     }
     float NdotL = max(dot(N, L), 0.0);
 
+    // cartoon: o maior multiplo de 1/NIVEIS que nao passa de NdotL
+    float difusa = NdotL;
+    if (u_modo == 2) difusa = floor(NdotL * NIVEIS_CARTOON) / NIVEIS_CARTOON;
+
     // sem brilho especular onde a luz nao chega
     float brilho = 0.0;
     if (NdotL > 0.0) {
-        vec3 H = normalize(L + V);
-        brilho = pow(max(dot(N, H), 0.0), u_alfa);
+        if (u_modo == 1) {
+            // o alfa dos materiais e de Blinn-Phong, que pede um expoente ~4 vezes maior
+            vec3 R = reflect(-L, N);
+            brilho = pow(max(dot(R, V), 0.0), u_alfa / 4.0);
+        } else {
+            vec3 H = normalize(L + V);
+            brilho = pow(max(dot(N, H), 0.0), u_alfa);
+        }
     }
-    return atenuacao * cor * (kd * NdotL + u_ks * brilho);
+    return atenuacao * cor * (kd * difusa + u_ks * brilho);
 }
 
 void main() {
+    // Modo normais (normais.frag): a normal do mundo, de [-1, 1] para [0, 1].
+    if (u_modo == 3) {
+        outfragcolor = vec4(normalize(fNmundo) * 0.5 + 0.5, 1.0);
+        return;
+    }
+
     vec3 kd = u_kd;
     if (u_usar_textura) kd = texture(u_base, fTexCoord * u_repeticoes).rgb;
     if (u_usar_camada) {

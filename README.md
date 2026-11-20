@@ -34,6 +34,8 @@ Também dá para rodar pelo botão de executar do editor, com o arquivo `src/app
 | R | reinicia (começa outra partida na hora) |
 | C | troca a câmera: segue a nave / visão geral |
 | L | troca as luzes: Sol + nave / só o Sol / só a nave |
+| I | troca a iluminação: Blinn-Phong / Phong / cartoon / normais |
+| T | troca a textura da Terra: foto / padrão de teste / tijolos |
 | V | liga e desliga o vsync (fps na barra de título) |
 | ESC | sai |
 
@@ -48,4 +50,4 @@ Na câmera de visão geral:
 
 ## Modelos e texturas
 
-Ficam em `src/app/assets/`. O cubo e as imagens da Terra e das nuvens vêm do material da disciplina (as imagens são da série Blue Marble, da NASA). O modelo e a textura dos asteroides foram gerados pelo script `src/app/gerar_assets.py`, que não precisa ser executado para jogar.
+Ficam em `src/app/assets/`. O cubo e as imagens `terra.jpg`, `nuvem.jpg`, `pattern.png` e `brick_base.jpg` vêm do material da disciplina (as da Terra e das nuvens são da série Blue Marble, da NASA). O modelo e a textura dos asteroides foram gerados pelo script `src/app/gerar_assets.py`, que não precisa ser executado para jogar.

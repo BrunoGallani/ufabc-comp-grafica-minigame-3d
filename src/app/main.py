@@ -15,6 +15,8 @@ Teclas:
     R                             reinicia (começa outra partida na hora)
     C                             troca a câmera: segue a nave / visão geral
     L                             troca as luzes: Sol + nave / só o Sol / só a nave
+    I                             troca a iluminação: Blinn-Phong / Phong / cartoon / normais
+    T                             troca a textura da Terra: foto / padrão de teste / tijolos
     V                             liga e desliga o vsync (fps na barra de título)
     ESC                           sai
 
