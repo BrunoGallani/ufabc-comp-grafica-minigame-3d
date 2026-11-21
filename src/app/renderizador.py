@@ -142,9 +142,9 @@ class Renderizador:
     def cubo(self, modelo: glm.mat4, mat: Material) -> None:
         self._desenhar(self._cubo, modelo, mat)
 
-    def asteroide(self, modelo: glm.mat4) -> None:
+    def asteroide(self, modelo: glm.mat4, mat: Material) -> None:
         # O enquadramento vem primeiro: leva a malha do arquivo para o raio 1 na origem.
-        self._desenhar(self._asteroide, modelo * self._enquadramento, material.ROCHA,
+        self._desenhar(self._asteroide, modelo * self._enquadramento, mat,
                        self._tex_rocha, REPETICOES_ROCHA)
 
     def terra(self, modelo: glm.mat4, deslocamento_nuvens: float) -> None:

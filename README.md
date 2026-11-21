@@ -4,7 +4,7 @@ Projeto de minigame 3D desenvolvido em Python e OpenGL para a atividade 5 da dis
 
 ## O jogo (protótipo)
 
-A Terra fica no centro da cena e a nave orbita o planeta. Asteroides surgem ao redor e vêm em linha reta na direção da Terra: a nave gira na órbita para ficar de frente para eles e atira. Cada asteroide destruído vale um ponto; cada um que atinge a Terra ou a nave tira uma vida. Vence quem completa a fileira de pontos do placar (20) e perde quem fica sem vidas (3). Os asteroides vêm cada vez mais rápidos e mais frequentes.
+A Terra fica no centro da cena e a nave orbita o planeta. Asteroides surgem ao redor e vêm em linha reta na direção da Terra: a nave gira na órbita para ficar de frente para eles e atira. Cada asteroide destruído vale um ponto; cada um que atinge a Terra ou a nave tira uma vida. Vence quem completa a fileira de pontos do placar (20) e perde quem fica sem vidas (3). Os asteroides vêm cada vez mais rápidos e mais frequentes. Da metade da partida em diante surgem também asteroides resistentes, avermelhados, que aguentam dois tiros: o primeiro os deixa em brasa e o segundo os destrói. A chance de um asteroide vir resistente cresce com os pontos.
 
 O placar é desenhado com geometria: os pontos no canto de cima à esquerda e as vidas à direita. Um ícone no meio da tela mostra o estado (jogar, pausa, vitória ou derrota), e uma seta vermelha na borda aponta o lado do asteroide mais urgente quando ele está fora da vista.
 

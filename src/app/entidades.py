@@ -93,6 +93,8 @@ class Asteroide:
     distancia: float = RAIO_SURGIMENTO   # até o centro da Terra
     giro: float = 0.0
     idade: float = 0.0
+    resistente: bool = False   # aguenta um tiro a mais
+    rachado: bool = False      # resistente que já levou o primeiro tiro
     atingido: bool = False
     sumindo: float = 0.0   # tempo desde que foi atingido
 
@@ -103,6 +105,21 @@ class Asteroide:
     @property
     def sumiu(self) -> bool:
         return self.sumindo >= TEMPO_SUMIR
+
+    @property
+    def material_atual(self) -> material.Material:
+        if self.rachado:
+            return material.ROCHA_RACHADA
+        if self.resistente:
+            return material.ROCHA_RESISTENTE
+        return material.ROCHA
+
+    def levar_tiro(self) -> None:
+        """O resistente racha no primeiro tiro; no segundo, é atingido como os outros."""
+        if self.resistente and not self.rachado:
+            self.rachado = True
+        else:
+            self.atingido = True
 
     def atualizar(self, dt: float) -> None:
         self.idade += dt
@@ -118,7 +135,7 @@ class Asteroide:
         modelo = (glm.translate(self.posicao)
                   * glm.rotate(self.giro, self.eixo)
                   * glm.scale(self.tamanho * fator))
-        render.asteroide(modelo)
+        render.asteroide(modelo, self.material_atual)
 
 
 @dataclass(eq=False)

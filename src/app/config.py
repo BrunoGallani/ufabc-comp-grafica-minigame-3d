@@ -53,6 +53,9 @@ VEL_GIRO_ASTEROIDE = (0.4, 1.6)
 REPETICOES_ROCHA = (3.0, 2.0)
 TEMPO_SURGIR = 0.6   # o asteroide cresce até o tamanho final
 TEMPO_SUMIR = 0.2    # e encolhe depois de atingido
+# Resistentes aguentam um tiro a mais. Surgem a partir da metade da META, com chance crescente.
+PONTOS_RESISTENTE = META // 2
+CHANCE_RESISTENTE = (0.15, 0.5)
 
 FOVY = np.radians(45.0)
 RAIO_CENA = RAIO_SURGIMENTO + 1.5   # esfera em volta da Terra que contém tudo que é desenhado
