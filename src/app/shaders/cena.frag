@@ -21,7 +21,7 @@ uniform vec3 u_cor_luz;
 uniform vec3 u_atenuacao;     // kc, kl, kq
 
 uniform bool u_usar_textura;
-uniform sampler2D u_base;     // cor, no lugar de kd
+uniform sampler2D u_base;     // cor, multiplicada por kd
 uniform vec2 u_repeticoes;
 uniform bool u_usar_camada;
 uniform sampler2D u_camada;   // mascara das nuvens: 0 ceu limpo, 1 nuvem
@@ -70,7 +70,7 @@ void main() {
     }
 
     vec3 kd = u_kd;
-    if (u_usar_textura) kd = texture(u_base, fTexCoord * u_repeticoes).rgb;
+    if (u_usar_textura) kd = u_kd * texture(u_base, fTexCoord * u_repeticoes).rgb;
     if (u_usar_camada) {
         float nuvem = texture(u_camada, fTexCoord + vec2(u_deslocamento, 0.0)).r;
         kd = mix(kd, vec3(1.0), nuvem);

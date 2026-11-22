@@ -12,9 +12,9 @@ import numpy as np
 
 from colisao import esferas_colidem
 from config import (
-    ACHATAMENTO_ASTEROIDE, ALCANCE_TIRO, INTERVALO_ASTEROIDE, INTERVALO_TIRO, META, Par,
-    PRIMEIRO_ASTEROIDE, RAIO_ASTEROIDE, RAIO_ORBITA, SAIDA_TIRO, VARIACAO_VEL_ASTEROIDE,
-    VEL_ASTEROIDE, VEL_GIRO_ASTEROIDE, VIDAS,
+    ACHATAMENTO_ASTEROIDE, ALCANCE_TIRO, CHANCE_RESISTENTE, INTERVALO_ASTEROIDE, INTERVALO_TIRO,
+    META, PONTOS_RESISTENTE, Par, PRIMEIRO_ASTEROIDE, RAIO_ASTEROIDE, RAIO_ORBITA, SAIDA_TIRO,
+    VARIACAO_VEL_ASTEROIDE, VEL_ASTEROIDE, VEL_GIRO_ASTEROIDE, VIDAS,
 )
 from entidades import Asteroide, Nave, Terra, Tiro
 
@@ -85,8 +85,16 @@ class Partida:
         eixo = glm.normalize(glm.vec3(*(random.gauss(0.0, 1.0) for _ in range(3))))
         velocidade = interpolar(VEL_ASTEROIDE, progresso) \
             * sortear(1.0 - VARIACAO_VEL_ASTEROIDE, 1.0 + VARIACAO_VEL_ASTEROIDE)
+        resistente = random.random() < self._chance_resistente()
         self.asteroides.append(Asteroide(sortear(0.0, 2.0 * np.pi), velocidade, raio, tamanho,
-                                         eixo, sortear(*VEL_GIRO_ASTEROIDE)))
+                                         eixo, sortear(*VEL_GIRO_ASTEROIDE), resistente=resistente))
+
+    def _chance_resistente(self) -> float:
+        """Zero até PONTOS_RESISTENTE; depois cresce com os pontos, de CHANCE_RESISTENTE[0] a [1]."""
+        if self.pontos < PONTOS_RESISTENTE:
+            return 0.0
+        return interpolar(CHANCE_RESISTENTE,
+                          (self.pontos - PONTOS_RESISTENTE) / (META - PONTOS_RESISTENTE))
 
     def _colidir(self) -> None:
         for asteroide in self.asteroides:
@@ -94,8 +102,10 @@ class Partida:
                 continue
             for tiro in self.tiros:
                 if not tiro.gasto and self._tocam(asteroide, tiro):
-                    tiro.gasto = asteroide.atingido = True
-                    self.pontos = min(META, self.pontos + 1)
+                    tiro.gasto = True
+                    asteroide.levar_tiro()
+                    if asteroide.atingido:
+                        self.pontos = min(META, self.pontos + 1)
                     break
             else:
                 if self._tocam(asteroide, self.terra) or self._tocam(asteroide, self.nave):
